@@ -17,7 +17,12 @@ def search_wikipedia(driver, query):
 
 
 def list_paragraphs(driver):
-    paragraphs = driver.find_elements(By.CSS_SELECTOR, "p")
+    # Находим параграфы только в основном тексте статьи
+    #content = driver.find_element(By.ID, "mw-content-text")
+    #paragraphs = content.find_elements(By.CSS_SELECTOR, "p")
+    paragraphs = driver.find_elements(By.TAG_NAME, "p")
+
+
     paragraph_counter = 0
 
     for paragraph in paragraphs:
@@ -31,11 +36,14 @@ def list_paragraphs(driver):
                 if action.lower() == 'q':
                     break
 
+
 def list_related_links(driver):
     links = driver.find_elements(By.CSS_SELECTOR, "#bodyContent a")
     related_links = [(index, link.text, link.get_attribute("href")) for index, link in enumerate(links) if link.text]
-    for index, (text, href) in enumerate(related_links[:10]):
-        print(f"{index + 1}. {text}")
+
+    for index_value, text, href in related_links[:10]:
+        print(f"{index_value + 1}. {text}")
+
     return related_links
 
 def main():
